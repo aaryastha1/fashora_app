@@ -1,4 +1,4 @@
-import 'package:fashora_app/View/Sign_In.dart';
+import 'package:fashora_app/View/Sign_Up.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -41,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Sign In',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -89,11 +89,11 @@ class _LoginPageState extends State<LoginPage> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF9B7745),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                        minimumSize: const Size(double.infinity,50),
+                        
                       ),
-                      child: const Text('Sign In', style: TextStyle(color: Colors.white)),
+                      child: const Text('Sign In', style: TextStyle(fontSize:18, color: Colors.white),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 10),

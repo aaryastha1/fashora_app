@@ -1,3 +1,4 @@
+import 'package:fashora_app/View/login.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -66,12 +67,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFB28D5B),
+                backgroundColor: const Color(0xFF9B7745),
                 minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: _signUp,
               child: const Text(
-                'Sign',
+                'Sign Up',
                 style: TextStyle(fontSize: 18, color: Colors.white),
                 
               ),
@@ -97,7 +98,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 30),
             GestureDetector(
               onTap: () {
-                // Navigate to Sign In
+                Navigator.pushReplacement(context,
+                 MaterialPageRoute(builder: (context)=> const LoginPage()),
+                 );
               },
               child: const Text.rich(
                 TextSpan(
