@@ -33,6 +33,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     print("Phone: ${_phoneController.text}");
     print("Password: ${_passwordController.text}");
   }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +89,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               children: const [
                 SocialIcon(icon: FontAwesomeIcons.facebook, color: Colors.blue),
                 SizedBox(width: 20),
-                SocialIcon(icon: FontAwesomeIcons.google, color: Colors.yellow),
+                SocialIcon(icon: FontAwesomeIcons.google, color: Colors.red),
               ],
             ),
 

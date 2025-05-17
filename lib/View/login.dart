@@ -1,6 +1,7 @@
-import 'package:fashora_app/social_icon.dart';
+import 'package:fashora_app/View/Sign_In.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -27,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const SizedBox(height: 10),
                   Image.asset(
-                    'assets/images/fashora.png', 
+                    'assets/images/fashora.png',
                     height: 100,
                   ),
                   const SizedBox(height: 10),
@@ -92,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text('Sign ', style: TextStyle(color: Colors.white), ),
+                      child: const Text('Sign In', style: TextStyle(color: Colors.white)),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -109,7 +110,6 @@ class _LoginPageState extends State<LoginPage> {
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text('OR'),
-                        
                       ),
                       Expanded(child: Divider()),
                     ],
@@ -118,13 +118,13 @@ class _LoginPageState extends State<LoginPage> {
                   const Text('Sign in with'),
                   const SizedBox(height: 10),
                   Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                SocialIcon(icon: FontAwesomeIcons.facebook, color: Colors.blue),
-                SizedBox(width: 15),
-                SocialIcon(icon: FontAwesomeIcons.google, color: Colors.red),
-              ],
-            ),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      SocialIcon(icon: FontAwesomeIcons.facebook, color: Colors.blue),
+                      SizedBox(width: 15),
+                      SocialIcon(icon: FontAwesomeIcons.google, color: Colors.red),
+                    ],
+                  ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -132,7 +132,10 @@ class _LoginPageState extends State<LoginPage> {
                       const Text("Don't have an account? "),
                       GestureDetector(
                         onTap: () {
-                          // Navigate to Sign Up screen
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                          );
                         },
                         child: const Text(
                           'Sign Up',
