@@ -1,3 +1,4 @@
+import 'package:fashora_app/View/login.dart';
 import 'package:flutter/material.dart';
 
 
@@ -60,8 +61,9 @@ class _SplashScreenState extends State<SplashScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         // Placeholder for button action
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Get Started Pressed')),
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()),
                         );
                       },
                       style: ElevatedButton.styleFrom(

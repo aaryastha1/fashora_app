@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 
@@ -82,14 +83,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const Text('Sign up with',
             style: TextStyle(fontSize: 17 , color: Colors.black),),
             const SizedBox(height: 10),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: const [
-            //     SocialIcon(icon: FontAwesomeIcons.facebook, color: Colors.blue),
-            //     SizedBox(width: 20),
-            //     SocialIcon(icon: FontAwesomeIcons.google, color: Colors.red),
-            //   ],
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                SocialIcon(icon: FontAwesomeIcons.facebook, color: Colors.blue),
+                SizedBox(width: 20),
+                SocialIcon(icon: FontAwesomeIcons.google, color: Colors.yellow),
+              ],
+            ),
+
+            
             const SizedBox(height: 30),
             GestureDetector(
               onTap: () {

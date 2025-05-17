@@ -128,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
       backgroundColor: const Color(0xFF8A6D43), // Your brown color
       currentIndex: _currentIndex,
-      selectedItemColor: Colors.white,          // Highlighted icon
+      selectedItemColor: Colors.black45,          // Highlighted icon
       unselectedItemColor: Colors.black45,      // Dimmed unselected icons
       showSelectedLabels: false,
       showUnselectedLabels: false,
