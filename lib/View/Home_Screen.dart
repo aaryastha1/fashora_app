@@ -25,7 +25,7 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
         backgroundColor: Color(0xFFF6EBDD),
         elevation: 0,
         title: Image.asset(
-          'assets/images/fashora.png', // Replace with your actual logo image path
+          'assets/images/fashora.png', // Your logo image here
           height: 30,
         ),
         actions: [
@@ -100,6 +100,7 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
                 ],
               ),
             ),
+
             // Categories
             SizedBox(height: 10),
             SingleChildScrollView(
@@ -118,7 +119,9 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
-                          color: selectedCategoryIndex == index ? Colors.black : Colors.grey,
+                          color: selectedCategoryIndex == index
+                              ? Colors.black
+                              : Colors.grey,
                           decoration: selectedCategoryIndex == index
                               ? TextDecoration.underline
                               : TextDecoration.none,
@@ -130,6 +133,7 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
               ),
             ),
             SizedBox(height: 16),
+
             // Product Grid
             Expanded(
               child: GridView.count(
@@ -144,28 +148,44 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
                   _buildProductCard("assets/images/top1.png", "Brown fitted top", "Rs. 1499"),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        backgroundColor: Color(0xFF8A6D433),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.black45,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
+
+      // Bottom Navigation Bar (with visible color)
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Color(0xFF8A6D43),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 5,
+              offset: Offset(0, -1),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.black45,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
+          ],
+        ),
       ),
     );
   }

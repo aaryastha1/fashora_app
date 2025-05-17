@@ -1,4 +1,4 @@
-import 'package:fashora_app/View/Sign_Up.dart';
+import 'package:fashora_app/View/sign_up.dart';
 import 'package:fashora_app/View/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

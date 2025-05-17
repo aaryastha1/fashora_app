@@ -1,6 +1,6 @@
 
 import 'package:fashora_app/View/Home_Screen.dart';
-import 'package:fashora_app/View/Sign_Up.dart';
+import 'package:fashora_app/View/sign_up.dart';
 import 'package:fashora_app/View/dashboard.dart';
 import 'package:fashora_app/View/splashscreen.dart';
 import 'package:flutter/material.dart';
