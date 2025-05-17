@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Fashora App',
-      home: FashoraHomeScreen(),
+      home: SplashScreen(),
     
       debugShowCheckedModeBanner: false,
     );
