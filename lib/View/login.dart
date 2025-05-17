@@ -1,4 +1,5 @@
 import 'package:fashora_app/View/Sign_Up.dart';
+import 'package:fashora_app/View/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -85,7 +86,10 @@ class _LoginPageState extends State<LoginPage> {
                     height: 45,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle sign-in logic
+                        Navigator.pushReplacement(context,
+                         MaterialPageRoute(builder: (context)=>DashboardScreen()),
+                         );
+                        
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF9B7745),

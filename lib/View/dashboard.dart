@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 
 
-class HomeScreen extends StatefulWidget {
+class DashboardScreen extends StatefulWidget {
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _DashboardScreenState extends State<DashboardScreen> {
   int _currentIndex = 0;
 
   @override
@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   elevation: 0,
   title: Image.asset(
     'assets/images/fashora.png', // Your uploaded logo
-    height: 70,
+    height: 80,
   ),
       // appBar: AppBar(
       //   backgroundColor: Colors.white,
