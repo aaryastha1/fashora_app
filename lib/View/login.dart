@@ -66,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 9),
                   Row(
                     children: [
                       Checkbox(

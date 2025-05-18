@@ -149,8 +149,8 @@ class SocialIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: 20,
-      backgroundColor: Colors.white,
+      // radius: 20,
+      // backgroundColor: Colors.white,
       child: Icon(icon, size: 20, color: color),
     );
   }
