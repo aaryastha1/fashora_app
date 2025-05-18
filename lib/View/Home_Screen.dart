@@ -193,8 +193,8 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
   Widget _buildProductCard(String image, String title, String price) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        // color: Colors.white,
+        // borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
