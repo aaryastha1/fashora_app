@@ -48,7 +48,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 40),
             // Logo and Store Name
             Image.asset(
-                    'assets/images/fashora.png', // Replace with your logo asset
+                    'assets/images/fashoraa.png', // Replace with your logo asset
                     height: 130,
                   ),
             const SizedBox(height: 40),

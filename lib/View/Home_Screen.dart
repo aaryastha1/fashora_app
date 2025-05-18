@@ -22,11 +22,11 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFF6EBDD),
       appBar: AppBar(
-        backgroundColor: Color(0xFFF6EBDD),
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Image.asset(
-          'assets/images/fashora.png', // Your logo image here
-          height: 30,
+          'assets/images/fashoraa.png', // Your logo image here
+          height: 80,
         ),
         actions: [
           IconButton(

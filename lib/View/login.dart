@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const SizedBox(height: 10),
                   Image.asset(
-                    'assets/images/fashora.png',
+                    'assets/images/fashoraa.png',
                     height: 100,
                   ),
                   const SizedBox(height: 10),
