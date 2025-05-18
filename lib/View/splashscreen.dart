@@ -49,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     'Refresh your style with the latest fashion\nand let your personality shine through',
                     style: TextStyle(
                       fontSize: 17,
-                      color: Colors.grey[700],
+                      color: Colors.grey[800],
                     ),
                   ),
                   Spacer(),
@@ -69,9 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF8A6D43),
                         padding: EdgeInsets.symmetric(horizontal: 40, vertical: 17),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
+                        
                       ),
                       child: Text(
                         'Get Started',
