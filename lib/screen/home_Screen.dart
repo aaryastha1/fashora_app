@@ -232,11 +232,10 @@
 // }
 
 
-import 'package:fashora_app/screen/prorfile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fashora_app/screen/favorite_screen.dart';
 import 'package:fashora_app/screen/cart_screen.dart';
-
+import 'package:fashora_app/screen/profile_screen.dart';
 
 class FashoraHomeScreen extends StatefulWidget {
   @override

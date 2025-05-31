@@ -6,9 +6,9 @@ class FavoriteScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      backgroundColor: Color(0xFFF6EBDD),
+      backgroundColor:  Color(0xFFF6EBDD), 
       appBar: AppBar(
-         backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         elevation: 0,
         title: Image.asset(
           'assets/images/fashoraa.png',
@@ -17,7 +17,7 @@ class FavoriteScreen extends StatelessWidget {
 
       ),
       
-
+     
     );
   }
 }
