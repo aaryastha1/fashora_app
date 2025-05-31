@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ThemeData getApplicationTheme(){
   return ThemeData(
-     useMaterial3: false, primarySwatch: Colors.blue,
+     useMaterial3: false, primarySwatch: Colors.cyan,
      fontFamily: 'Opensans Regular',
      elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

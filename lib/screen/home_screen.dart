@@ -195,7 +195,7 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
               case 1:
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FavoriteScreen()),
+                  MaterialPageRoute(builder: (context) => WishlistScreen()),
                 );
                 break;
               case 2:
