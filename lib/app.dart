@@ -1,7 +1,8 @@
 
 
-import 'package:fashora_app/View/dashboard_screen.dart';
+
 import 'package:fashora_app/View/splashscreen.dart';
+import 'package:fashora_app/theme/themedata.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -11,7 +12,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Fashora App',
-      home: DashboardScreen(),
+      theme: getApplicationTheme(),
+      home: SplashScreen(),
+
     
       debugShowCheckedModeBanner: false,
     );

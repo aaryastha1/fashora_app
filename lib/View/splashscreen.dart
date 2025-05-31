@@ -66,11 +66,11 @@ class _SplashScreenState extends State<SplashScreen> {
                           MaterialPageRoute(builder: (context) => LoginPage()),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFF8A6D43),
-                        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 17),
+                      // style: ElevatedButton.styleFrom(
+                      //   backgroundColor: Color(0xFF8A6D43),
+                      //   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 17),
                         
-                      ),
+                      // ),
                       child: Text(
                         'Get Started',
                         style: TextStyle(

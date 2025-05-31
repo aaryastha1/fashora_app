@@ -67,8 +67,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF9B7745),
-                minimumSize: const Size(double.infinity, 50),
+                // backgroundColor: const Color(0xFF9B7745),
+                // minimumSize: const Size(double.infinity, 50),
               ),
               onPressed: _signUp,
               child: const Text(
@@ -111,6 +111,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       text: 'Sign In',
                       style: TextStyle(
                         color: Colors.black,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
                     )
