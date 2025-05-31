@@ -1,4 +1,11 @@
+
+
+
+import 'package:fashora_app/screen/prorfile_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fashora_app/screen/favorite_screen.dart';
+import 'package:fashora_app/screen/cart_screen.dart';
+
 
 class FashoraHomeScreen extends StatefulWidget {
   @override
@@ -25,7 +32,7 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: Image.asset(
-          'assets/images/fashoraa.png', // Your logo image here
+          'assets/images/fashoraa.png',
           height: 80,
         ),
         actions: [
@@ -153,7 +160,7 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
         ),
       ),
 
-      // Bottom Navigation Bar (with visible color)
+      // Bottom Navigation Bar
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Color(0xFF8A6D43),
@@ -178,6 +185,27 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
             setState(() {
               _selectedIndex = index;
             });
+
+            switch (index) {
+              case 1:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FavoriteScreen()),
+                );
+                break;
+              case 2:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CartScreen()),
+                );
+                break;
+              case 3:
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
+                break;
+            }
           },
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),

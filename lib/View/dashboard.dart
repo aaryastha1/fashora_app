@@ -1,4 +1,4 @@
-import 'package:fashora_app/View/Home_Screen.dart';
+import 'package:fashora_app/screen/home_screen.dart';
 import 'package:flutter/material.dart';
  // Update the path if it's in a different folder
 

@@ -1,5 +1,5 @@
 
-import 'package:fashora_app/View/Home_Screen.dart';
+import 'package:fashora_app/screen/home_screen.dart';
 import 'package:fashora_app/View/login.dart';
 import 'package:fashora_app/View/sign_up.dart';
 import 'package:fashora_app/View/dashboard.dart';
