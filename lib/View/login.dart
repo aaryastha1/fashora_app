@@ -1,5 +1,6 @@
+import 'package:fashora_app/View/dashboard_screen.dart';
 import 'package:fashora_app/View/sign_up.dart';
-import 'package:fashora_app/View/dashboard.dart';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -30,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 10),
                   Image.asset(
                     'assets/images/fashoraa.png',
-                    height: 100,
+                    height: 120,
                   ),
                   const SizedBox(height: 10),
                   const Text(
