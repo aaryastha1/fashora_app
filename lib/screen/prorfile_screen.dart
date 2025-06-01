@@ -1,7 +1,6 @@
-import 'package:fashora_app/screen/favorite_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fashora_app/screen/favorite_screen.dart';
 import 'package:fashora_app/screen/home_screen.dart';
-
 import 'package:fashora_app/screen/cart_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -12,7 +11,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int _selectedIndex = 1; // Profile tab
+  int _selectedIndex = 3; // Profile tab
 
   void _onItemTapped(int index) {
     setState(() {
@@ -48,71 +47,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        toolbarHeight: 70,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 0),
-              child: Image.asset(
-                'assets/images/fashoraa.png',
-                height: 85,
+      body: Stack(
+        children: [
+          // Curved header
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: ClipPath(
+              clipper: WaveClipper(),
+              child: Container(
+                height: 200,
+                color: const Color.fromARGB(255, 153, 132, 124),
               ),
             ),
-          ],
-        ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const CircleAvatar(
-              radius: 45,
-              backgroundImage: AssetImage('assets/images/profile_placeholder.png'),
+          ),
+          // Title
+          Padding(
+            padding: const EdgeInsets.only(top: 100, left: 20, right: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  'Profile',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 12),
-            const Text(
-              "Aarya ",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 4),
-            const Text("aarya@.com", style: TextStyle(color: Colors.black54)),
+          ),
 
-            const SizedBox(height: 30),
-            ListTile(
-              leading: const Icon(Icons.edit),
-              title: const Text("Edit Profile"),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.shopping_cart),
-              title: const Text("My Cart"),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text("Settings"),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Logout"),
-              trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                // handle logout
-              },
-            ),
-          ],
-        ),
+          // TODO: Add profile details here
+        ],
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
@@ -145,4 +114,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+}
+
+// Reused WaveClipper
+class WaveClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.lineTo(0, 40);
+    path.quadraticBezierTo(size.width * 0.8, 120, size.width, 40);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

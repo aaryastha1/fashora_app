@@ -187,6 +187,7 @@ class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
           showSelectedLabels: false,
           showUnselectedLabels: false,
           onTap: (index) {
+            
             setState(() {
               _selectedIndex = index;
             });
