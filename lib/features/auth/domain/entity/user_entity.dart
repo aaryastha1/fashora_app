@@ -1,13 +1,13 @@
-import 'dart:ffi';
 
 import 'package:equatable/equatable.dart';
 
 class UserEntity  extends Equatable{
   final String? userId;
-  final String? fullName;
-  final String? email;
-  final int? phonenumber;
-  final String? password;
+  final String fullName;
+  final String email;
+  final String phonenumber;
+  final String password;
+ 
 
 
   const UserEntity ({
