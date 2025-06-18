@@ -1,5 +1,6 @@
 import 'package:fashora_app/View/dashboard_screen.dart';
-import 'package:fashora_app/View/sign_up.dart';
+
+import 'package:fashora_app/features/auth/presentation/view/sign_up.dart';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -139,7 +140,7 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => const SignUpScreen()),
+                            MaterialPageRoute(builder: (context) => const RegisterView()),
                           );
                         },
                         child: const Text(

@@ -1,18 +1,21 @@
-import 'package:fashora_app/View/login.dart';
+
+
+import 'package:fashora_app/features/auth/presentation/view/login.dart';
+import 'package:fashora_app/features/auth/presentation/view_model/register_view_model/register_event.dart';
+import 'package:fashora_app/features/auth/presentation/view_model/register_view_model/register_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-
-
-
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
 
   @override
-  State<SignUpScreen> createState() => _SignUpScreenState();
+  State<RegisterView> createState() => _RegisterViewState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _RegisterViewState extends State<RegisterView> {
+ final _formKey = GlobalKey<FormState>();
   final _fullNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -65,19 +68,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
             _buildInputField(_phoneController, 'Phone Number'),
             _buildInputField(_passwordController, 'Password', obscure: true),
             const SizedBox(height: 20),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                // backgroundColor: const Color(0xFF9B7745),
-                // minimumSize: const Size(double.infinity, 50),
-              ),
-              onPressed: _signUp,
-              child: const Text(
-                'Sign Up',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-                
-              ),
-              
-            ),
+        SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          context.read<RegisterViewModel>().add(
+                            RegisterUserEvent(
+                              context: context,
+                              fullName: _fullNameController.text,
+                              email: _emailController.text,
+                              phonenumber: _phoneController.text,
+                              password: _passwordController.text,
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text('Register', style: TextStyle(color: Colors.white),),
+                    ),
+        ),
             const SizedBox(height: 10),
             const Divider(height: 20),
             const Text('OR'),

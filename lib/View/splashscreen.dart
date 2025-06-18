@@ -1,4 +1,5 @@
-import 'package:fashora_app/View/login.dart';
+
+import 'package:fashora_app/features/auth/presentation/view/login.dart';
 import 'package:flutter/material.dart';
 
 

@@ -5,13 +5,13 @@ import 'package:fashora_app/core/error/failure.dart';
 import 'package:fashora_app/features/auth/domain/entity/user_entity.dart';
 import 'package:fashora_app/features/auth/domain/repository/user_repository.dart';
 
-class RegisterUseParams extends Equatable{
+class RegisterUserParams extends Equatable{
   final String fullName;
   final String email;
   final String phonenumber;
   final String password;
 
-  const RegisterUseParams({
+  const RegisterUserParams({
     required this.fullName,
     required this.email,
     required this.phonenumber,
@@ -19,7 +19,7 @@ class RegisterUseParams extends Equatable{
   });
 
     //intial constructor
-    const RegisterUseParams.intial({
+    const RegisterUserParams.intial({
       required this.fullName,
       required this.email,
       required this.phonenumber,
@@ -36,13 +36,13 @@ class RegisterUseParams extends Equatable{
   ];
 }
 
-class UserRegisterUsecase  implements UsecaseWithParams<void, RegisterUseParams>{
+class UserRegisterUsecase  implements UsecaseWithParams<void, RegisterUserParams>{
   final IuserRepository _userRepository;
   UserRegisterUsecase({required IuserRepository userReposiotry})
   : _userRepository = userReposiotry;
 
   @override
-  Future<Either<Failure, void>> call(RegisterUseParams params) {
+  Future<Either<Failure, void>> call(RegisterUserParams params) {
     final userEntity = UserEntity(
       fullName: params.fullName,
       email : params.email,
