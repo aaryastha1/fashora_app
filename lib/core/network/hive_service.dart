@@ -4,7 +4,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:path_provider/path_provider.dart';
 
 class HiveService {
-  Future<void> int() async{
+  Future<void> init() async{
 
     var directory = await getApplicationDocumentsDirectory();
     var path = '${directory.path}user_managament.db';
