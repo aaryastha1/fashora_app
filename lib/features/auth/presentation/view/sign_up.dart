@@ -89,7 +89,7 @@ class _RegisterViewState extends State<RegisterView> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor:const Color.fromARGB(255, 160, 91, 91),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   onPressed: () {

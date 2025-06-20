@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget{
         ),
       ],
       child: MaterialApp(
-        // title: 'Student Management',
+       
         debugShowCheckedModeBanner: false,
         theme: getApplicationTheme(),
         home: RegisterView(), // or your LoginPage
