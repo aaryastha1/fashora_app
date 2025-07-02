@@ -176,7 +176,7 @@
 //   }
 // }
 
-import 'package:fashora_app/View/dashboard_screen.dart';
+import 'package:fashora_app/features/auth/presentation/view/dashboard_screen.dart';
 import 'package:fashora_app/features/auth/presentation/view/sign_up.dart';
 import 'package:fashora_app/features/auth/presentation/view_model/login_view_model/login_event.dart';
 import 'package:fashora_app/features/auth/presentation/view_model/login_view_model/login_view_model.dart';

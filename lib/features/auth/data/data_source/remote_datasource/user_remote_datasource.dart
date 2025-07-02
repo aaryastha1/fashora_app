@@ -1,28 +1,28 @@
+// import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
 import 'package:fashora_app/app/constant/api_endpoints.dart';
-import 'package:fashora_app/core/network/api_network.dart';
+import 'package:fashora_app/core/network/api_service.dart';
 import 'package:fashora_app/features/auth/data/data_source/user_data_source.dart';
 import 'package:fashora_app/features/auth/data/model/user_api_model.dart';
 import 'package:fashora_app/features/auth/domain/entity/user_entity.dart';
 
 class UserRemoteDatasource implements IuserDataSource {
-
   final ApiService _apiService;
 
   UserRemoteDatasource({required ApiService apiService})
-  : _apiService = apiService;
+      : _apiService = apiService;
 
   @override
   Future<String> loginUser(String email, String password) async {
-         try {
+    try {
       final response = await _apiService.dio.post(
         ApiEndpoints.login,
         data: {'email': email, 'password': password},
       );
       if (response.statusCode == 200) {
-        final str = response.data['token'];
-        return str;
-      } else { 
+        final token = response.data['token'];
+        return token;
+      } else {
         throw Exception(response.statusMessage);
       }
     } on DioException catch (e) {
@@ -30,20 +30,17 @@ class UserRemoteDatasource implements IuserDataSource {
     } catch (e) {
       throw Exception('Failed to login user: $e');
     }
-  
-  
   }
 
   @override
   Future<void> registerUser(UserEntity userData) async {
-        try {
-      // ignore: non_constant_identifier_names
+    try {
       final userApiModel = UserApiModel.fromEntity(userData);
       final response = await _apiService.dio.post(
         ApiEndpoints.register,
         data: userApiModel.toJson(),
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return;
       } else {
         throw Exception(
@@ -55,9 +52,10 @@ class UserRemoteDatasource implements IuserDataSource {
     } catch (e) {
       throw Exception('Failed to register user: $e');
     }
- 
   }
+
+  // @override
+  // Future<UserEntity> getCurrentUser() {
+  //   throw UnimplementedError();
+  // }
 }
-
-
-

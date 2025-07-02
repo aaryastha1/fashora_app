@@ -14,14 +14,14 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
-  final _fullNameController = TextEditingController();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
 
   @override
   void dispose() {
-    _fullNameController.dispose();
+    _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
     _passwordController.dispose();
@@ -54,7 +54,7 @@ class _RegisterViewState extends State<RegisterView> {
               ),
               const SizedBox(height: 20),
               _buildInputField(
-                controller: _fullNameController,
+                controller: _nameController,
                 hintText: 'Full Name',
                 validator: (value) =>
                     value!.isEmpty ? 'Full name is required' : null,
@@ -97,9 +97,9 @@ class _RegisterViewState extends State<RegisterView> {
                       context.read<RegisterViewModel>().add(
                         RegisterUserEvent(
                           context: context,
-                          fullName: _fullNameController.text,
+                          name: _nameController.text,
                           email: _emailController.text,
-                          phonenumber: _phoneController.text,
+                          phoneNumber: _phoneController.text,
                           password: _passwordController.text,
                         ),
                       );

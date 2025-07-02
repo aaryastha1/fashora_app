@@ -29,9 +29,9 @@ class RegisterViewModel  extends Bloc<RegisterEvent, RegisterState>{
     emit(state.copyWith(isLoading: true));
     final result = await _registerUsecase(
       RegisterUserParams(
-      fullName: event.fullName,
+      name: event.name,
       email : event.email,
-      phonenumber: event.phonenumber,
+      phoneNumber: event.phoneNumber,
       password: event.password,
 
       )
