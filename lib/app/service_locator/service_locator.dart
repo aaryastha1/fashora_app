@@ -97,26 +97,26 @@ import 'package:fashora_app/features/auth/presentation/view_model/register_view_
 final serviceLocator = GetIt.instance;
 
 Future<void> initDependencies() async {
-  // ✅ 1. Register Dio
+ 
   serviceLocator.registerLazySingleton<Dio>(() => Dio());
 
-  // ✅ 2. Register HiveService
+
   serviceLocator.registerLazySingleton<HiveService>(() => HiveService());
 
-  // ✅ 3. Initialize Hive
+ 
   await serviceLocator<HiveService>().init();
 
-  // ✅ 4. Register ApiService with Dio
+
   serviceLocator.registerLazySingleton<ApiService>(
     () => ApiService(serviceLocator<Dio>()),
   );
 
-  // ✅ 5. Initialize Auth-related services
+
   await _initAuthModule();
 }
 
 Future<void> _initAuthModule() async {
-  // ✅ Data Sources
+
   serviceLocator.registerFactory(
     () => UserLocalDatasource(hiveService: serviceLocator<HiveService>()),
   );
@@ -125,7 +125,7 @@ Future<void> _initAuthModule() async {
     () => UserRemoteDatasource(apiService: serviceLocator<ApiService>()),
   );
 
-  // ✅ Repositories
+
   serviceLocator.registerFactory(
     () => UserLocalRepository(
       userLocalDatasource: serviceLocator<UserLocalDatasource>(),
@@ -138,7 +138,7 @@ Future<void> _initAuthModule() async {
     ),
   );
 
-  // ✅ Use Cases
+
   serviceLocator.registerFactory(
     () => UserRegisterUsecase(
       userReposiotry: serviceLocator<UserRemoteRepository>(),
@@ -151,7 +151,7 @@ Future<void> _initAuthModule() async {
     ),
   );
 
-  // ✅ View Models
+  
   serviceLocator.registerLazySingleton(
     () => RegisterViewModel(
       registerUsecase: serviceLocator<UserRegisterUsecase>(),
