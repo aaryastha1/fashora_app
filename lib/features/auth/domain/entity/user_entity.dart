@@ -26,5 +26,15 @@ class UserEntity  extends Equatable{
     email,
     phoneNumber,
     password
-  ];
+  ];  
+  factory UserEntity.empty() {
+    return const UserEntity(
+      userId: null,
+     name: '',
+      email: '', 
+      phoneNumber: '', 
+      password: '',
+    );
+  }
+
 }
