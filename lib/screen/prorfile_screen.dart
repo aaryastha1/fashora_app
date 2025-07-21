@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fashora_app/screen/favorite_screen.dart';
-import 'package:fashora_app/screen/home_screen.dart';
+import 'package:fashora_app/features/product/presentation/view/home_screen.dart';
 import 'package:fashora_app/screen/cart_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
