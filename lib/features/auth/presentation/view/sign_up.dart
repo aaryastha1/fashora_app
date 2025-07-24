@@ -89,7 +89,7 @@ class _RegisterViewState extends State<RegisterView> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:const Color.fromARGB(255, 160, 91, 91),
+                    backgroundColor: Colors.brown,
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   onPressed: () {
@@ -114,7 +114,7 @@ class _RegisterViewState extends State<RegisterView> {
               const SizedBox(height: 10),
               const Divider(height: 20),
               const Text('OR'),
-              const SizedBox(height: 10),
+              const SizedBox(height: 18),
               const Text(
                 'Sign up with',
                 style: TextStyle(fontSize: 17, color: Colors.black),
@@ -122,11 +122,11 @@ class _RegisterViewState extends State<RegisterView> {
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  SocialIcon(icon: FontAwesomeIcons.facebook, color: Colors.blue),
-                  SizedBox(width: 20),
-                  SocialIcon(icon: FontAwesomeIcons.google, color: Colors.red),
-                ],
+                // children: const [
+                //   SocialIcon(icon: FontAwesomeIcons.facebook, color: Colors.blue),
+                //   SizedBox(width: 20),
+                //   SocialIcon(icon: FontAwesomeIcons.google, color: Colors.red),
+                // ],
               ),
               const SizedBox(height: 30),
               GestureDetector(
@@ -139,7 +139,8 @@ class _RegisterViewState extends State<RegisterView> {
                 child: const Text.rich(
                   TextSpan(
                     text: 'Already have an account? ',
-                    style: TextStyle(color: Colors.black54),
+                    
+                    style: TextStyle(color: Colors.black54) , 
                     children: [
                       TextSpan(
                         text: 'Sign In',

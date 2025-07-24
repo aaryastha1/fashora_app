@@ -42,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     style: TextStyle(
                       fontSize: 40,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF8A6D43), // Brown tone
+                      color: Colors.brown, // Brown tone
                     ),
                   ),
                   SizedBox(height: 47),
@@ -54,9 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   ),
                   Spacer(),
-                  // Padding(
-                  // padding: const EdgeInsets.only(bottom: 80),
-                  // ),
+                
                   Align(
                     alignment: Alignment.bottomRight,
                     child: ElevatedButton(
@@ -67,11 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
                           MaterialPageRoute(builder: (context) => LoginPage()),
                         );
                       },
-                      // style: ElevatedButton.styleFrom(
-                      //   backgroundColor: Color(0xFF8A6D43),
-                      //   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 17),
-                        
-                      // ),
+                  
                       child: Text(
                         'Get Started',
                         style: TextStyle(

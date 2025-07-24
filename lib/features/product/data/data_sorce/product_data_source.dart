@@ -6,8 +6,18 @@ abstract class IProductDataSource {
   /// Fetch products by category name (e.g., Tops, Dresses, Pants, etc.)
   Future<List<ProductEntity>> getProductsByCategory(String categoryName);
 
+
+
+  Future<List<ProductEntity>> searchProducts(String query);
+
+
   
 }
+
+
+
+
+
 
 
 

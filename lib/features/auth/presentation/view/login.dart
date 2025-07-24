@@ -304,7 +304,7 @@ class _LoginPageState extends State<LoginPage> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 160, 91, 91),
+                        backgroundColor: Colors.brown,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -316,7 +316,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
 
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 14),
                   TextButton(
                     onPressed: () {
                       // Handle forgot password logic
@@ -336,19 +336,19 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const Text('Sign in with'),
+                  // const Text('Sign in with'),
                   const SizedBox(height: 10),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      SocialIcon(icon: FontAwesomeIcons.facebook, color: Colors.blue),
-                      SizedBox(width: 15),
-                      SocialIcon(icon: FontAwesomeIcons.google, color: Colors.red),
-                    ],
+                    // children: const [
+                    //   SocialIcon(icon: FontAwesomeIcons.facebook, color: Colors.blue),
+                    //   SizedBox(width: 15),
+                    //   SocialIcon(icon: FontAwesomeIcons.google, color: Colors.red),
+                    // ],
                   ),
 
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -1,32 +1,28 @@
+
+
 // class ApiEndpoints {
 //   ApiEndpoints._();
 
-//   // Timeouts
-//   static const connectionTimeout = Duration(seconds: 1000);
-//   static const receiveTimeout = Duration(seconds: 1000);
+//   static const Duration connectionTimeout = Duration(seconds: 1000);
+//   static const Duration receiveTimeout = Duration(seconds: 1000);
 
-//   // For Android Emulator
 //   static const String serverAddress = "http://10.0.2.2:5006";
-//   static const String baseUrl = "$serverAddress/api/auth";
-  
-//   // // For iOS Simulator
-//   // static const String serverAddress = "http://localhost:3000";
 
-//   // For iPhone (uncomment if needed)
-//   // static const String baseUrl = "$serverAddress/api/v1/";
-//   // static const String imageUrl = "$baseUrl/uploads/";
+//   // Base URLs
+//   static const String authBaseUrl = "$serverAddress/api/auth";
+//   static const String userBaseUrl = "$serverAddress/api/user";
 
-//   // Auth
-//   static const String login = "/login";
-//   static const String register = "/register";
-//   static const String getProductsByCategory = "/products";
+//   // Auth endpoints
+//   static const String login = "$authBaseUrl/login";
+//   static const String register = "$authBaseUrl/register";
 
+//   // Product endpoint under user path
+//   static const String getProductsByCategory = "$userBaseUrl/products";
 
-
-
-
-
+//   // You can add a baseUrl here if needed:
+//   static const String baseUrl = serverAddress; // or "$serverAddress/api"
 // }
+
 
 class ApiEndpoints {
   ApiEndpoints._();
@@ -44,8 +40,39 @@ class ApiEndpoints {
   static const String login = "$authBaseUrl/login";
   static const String register = "$authBaseUrl/register";
 
+
+    // Profile endpoints
+
+
   // Product endpoint under user path
   static const String getProductsByCategory = "$userBaseUrl/products";
+
+  // Favorite endpoints
+  static const String getFavorites = "$userBaseUrl/favorites";
+  static const String toggleFavorite = "$userBaseUrl/favorites/toggle";
+
+
+  static const String cartBaseUrl = "$serverAddress/api/cart";
+
+static const String getCart = cartBaseUrl;
+static const String addToCart = cartBaseUrl; // POST to add item
+static const String removeFromCart = "$cartBaseUrl/remove"; // or customize based on your backend routes
+static const String updateCartItem = "$cartBaseUrl/update"; // or customize
+static const String clearCart = "$cartBaseUrl/clear";
+
+
+
+static const String searchProducts = '/api/user/products/search';
+
+
+ static const String getProfile = '$authBaseUrl/me';
+static const String updateProfile = '$authBaseUrl/me';
+
+ // if you have such an endpoint
+
+
+
+
 
   // You can add a baseUrl here if needed:
   static const String baseUrl = serverAddress; // or "$serverAddress/api"

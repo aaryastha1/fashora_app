@@ -17,7 +17,7 @@ class ProductRemoteDataSource implements IProductDataSource {
   Future<List<ProductEntity>> getProductsByCategory(String categoryName) async {
     try {
       final response = await _apiService.dio.get(
-      ApiEndpoints.getProductsByCategory,
+    ApiEndpoints.getProductsByCategory,
   queryParameters: {'categoryName': categoryName},
 );
 
@@ -37,4 +37,30 @@ class ProductRemoteDataSource implements IProductDataSource {
       throw Exception('Failed to load products: $e');
     }
   }
+
+
+  
+
+
+  @override
+Future<List<ProductEntity>> searchProducts(String query) async {
+  try {
+    final response = await _apiService.dio.get(
+      ApiEndpoints.searchProducts, // e.g., '/api/user/products/search'
+      queryParameters: {'q': query},
+    );
+
+    if (response.statusCode == 200 && response.data['products'] != null) {
+      final List<dynamic> productsJson = response.data['products'];
+      return productsJson
+          .map((json) => ProductApiModel.fromJson(json).toEntity())
+          .toList();
+    } else {
+      throw Exception('Search failed: ${response.statusMessage}');
+    }
+  } on DioException catch (e) {
+    throw Exception('Search failed: ${e.message}');
+  }
+}
+
 }

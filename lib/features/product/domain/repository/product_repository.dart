@@ -5,6 +5,10 @@ abstract class IProductRepository {
   /// Fetch list of products by category name
   Future<List<ProductEntity>> getProductsByCategory(String categoryName);
 
+
+  Future<List<ProductEntity>> searchProducts(String query);
+
+
   
 }
 
@@ -17,4 +21,17 @@ class ProductRemoteRepository implements IProductRepository {
   Future<List<ProductEntity>> getProductsByCategory(String categoryName) {
     return dataSource.getProductsByCategory(categoryName);
   }
+
+
+  @override
+Future<List<ProductEntity>> searchProducts(String query) {
+  return dataSource.searchProducts(query);
+}
+
+
+
+
+  
+
+
 }

@@ -1,7 +1,7 @@
 
+
 import 'package:fashora_app/features/product/presentation/view/home_screen.dart';
 import 'package:flutter/material.dart';
- // Update the path if it's in a different folder
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -9,7 +9,62 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  int _currentIndex = 0;
+  int _selectedIndex = 0;
+
+  // Define your brown dark color
+  final Color brownDark = const Color(0xFF654238);
+
+  final List<Widget> _screens = [
+    const DashboardContent(),
+    FashoraHomeScreen(userId: ''),
+    Placeholder(), // Favorites Screen placeholder
+    Placeholder(), // Cart Screen placeholder
+    Placeholder(), // Profile Screen placeholder
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: _screens[_selectedIndex],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: brownDark,
+          boxShadow: const [
+            BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, -1)),
+          ],
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+        ),
+        child: BottomNavigationBar(
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.brown.shade200,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          onTap: _onItemTapped,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class DashboardContent extends StatelessWidget {
+  const DashboardContent({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,45 +84,48 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Top image
               Center(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(14),
                   child: Image.asset(
                     'assets/images/shop.png',
                     fit: BoxFit.cover,
+                    height: 340, // smaller height for the first image
                   ),
                 ),
               ),
-              SizedBox(height: 40),
-
-              // "SHOP NOW" text with navigation
+              const SizedBox(height: 30), // reduced spacing
               Center(
-                child: GestureDetector(
-                  onTap: () {
+                child: TextButton(
+                  onPressed: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => FashoraHomeScreen(),
+                        builder: (context) => FashoraHomeScreen(userId: ''),
                       ),
                     );
                   },
-                  child: Text(
-                    'SHOP NOW',
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10), // smaller padding
+                    backgroundColor: Colors.brown,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      side: const BorderSide(color: Colors.brown),
+                    ),
+                  ),
+                  child: const Text(
+                    'EXPLORE NOW',
                     style: TextStyle(
-                      fontSize: 20,
-                      color: Color(0xFF8A6D43),
+                      fontSize: 16, // smaller font size
+                      color: Colors.white,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
-                      decoration: TextDecoration.underline,
+                      letterSpacing: 1,
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 24),
-
-              // Offers section
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'Offers',
                 style: TextStyle(
                   fontSize: 20,
@@ -75,7 +133,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   color: Colors.black87,
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Stack(
@@ -90,16 +148,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       bottom: 0,
                       right: 28,
                       child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                        decoration: BoxDecoration(
-                          color: Color(0xFF8A6D43),
+                        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                        decoration: const BoxDecoration(
+                          color: Colors.brown,
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(20),
                           ),
                         ),
-                        child: Text(
-                          'Know More',
+                        child: const Text(
+                          'SHOP NOW',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 15,
@@ -111,28 +168,76 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   ],
                 ),
               ),
+              const SizedBox(height: 24),
+              const Text(
+                'Shop by Category',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+              const SizedBox(height: 14),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // children: [
+                //   _buildCategoryCard('Dresses', 'assets/images/dressesss.jpg'),
+                //   _buildCategoryCard('Tops', 'assets/images/topssssss.jpg'),
+                  
+                // ],
+              ),
+          
             ],
           ),
         ),
       ),
+    );
+  }
 
-      // Bottom navigation bar
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color(0xFF8A6D43),
-        currentIndex: _currentIndex,
-        selectedItemColor: Colors.black45,
-        unselectedItemColor: Colors.black45,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed,
-        onTap: null, // No navigation logic added here yet
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: ''),
-        ],
+  Widget _buildCategoryCard(String title, String imagePath) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8),
+        height: 190, // bigger category cards
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.asset(
+                imagePath,
+                fit: BoxFit.cover,
+                height: 130, // bigger image inside the card
+                width: double.infinity,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.black87,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
+
+
