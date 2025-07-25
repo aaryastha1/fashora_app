@@ -1,3 +1,7 @@
+
+
+
+// import 'package:fashora_app/features/cart/domain/entity/cart_item_entity.dart';
 // import 'package:fashora_app/features/product/presentation/view/favorite_screen.dart';
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +10,9 @@
 // import 'package:fashora_app/features/cart/presentation/view_model/cart_state.dart';
 // import 'package:fashora_app/features/cart/presentation/view_model/cart_view_model.dart';
 // import 'package:fashora_app/features/product/presentation/view/home_screen.dart';
+// import 'package:fashora_app/features/order/domain/entity/order_item_entity.dart';
+// import 'package:fashora_app/features/order/presentation/view/order_screen.dart';
+// import 'package:fashora_app/features/profile/presentation/view/profile_screen.dart'; // ✅ Added
 
 // class CartScreen extends StatefulWidget {
 //   const CartScreen({super.key});
@@ -46,9 +53,28 @@
 //       case 2:
 //         break;
 //       case 3:
-//         // TODO: Profile
+//         Navigator.pushReplacement(
+//           context,
+//           MaterialPageRoute(builder: (_) => const ProfileScreen(userId: '',)), // ✅ ProfileScreen Navigation
+//         );
 //         break;
 //     }
+//   }
+
+//   void _proceedToCheckout(List<CartItemEntity> items) {
+//     final orderItems = items
+//         .map((cartItem) => OrderItemEntity(
+//               productId: cartItem.id,
+//               quantity: cartItem.quantity,
+//             ))
+//         .toList();
+
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (_) => OrderScreen(items: orderItems),
+//       ),
+//     );
 //   }
 
 //   @override
@@ -60,7 +86,6 @@
 //       backgroundColor: const Color(0xFFF6EBDD),
 //       body: Stack(
 //         children: [
-//           // Top curved background with gradient
 //           Positioned(
 //             top: 0,
 //             left: 0,
@@ -86,8 +111,6 @@
 //               ),
 //             ),
 //           ),
-
-//           // Title
 //           const Padding(
 //             padding: EdgeInsets.only(top: 135, left: 120),
 //             child: Text(
@@ -102,8 +125,6 @@
 //               ),
 //             ),
 //           ),
-
-//           // Cart items + summary + checkout
 //           Padding(
 //             padding: const EdgeInsets.only(top: 180, left: 12, right: 12, bottom: 12),
 //             child: BlocBuilder<CartBloc, CartState>(
@@ -236,9 +257,7 @@
 //                             _rowLabel('Total', total, brownDark, bold: true, fontSize: 20),
 //                             const SizedBox(height: 16),
 //                             ElevatedButton(
-//                               onPressed: () {
-//                                 // TODO: Add checkout functionality
-//                               },
+//                               onPressed: () => _proceedToCheckout(cart.items),
 //                               style: ElevatedButton.styleFrom(
 //                                 backgroundColor: Colors.brown,
 //                                 padding: const EdgeInsets.symmetric(vertical: 16),
@@ -343,18 +362,21 @@
 // }
 
 
-import 'package:fashora_app/features/cart/domain/entity/cart_item_entity.dart';
-import 'package:fashora_app/features/product/presentation/view/favorite_screen.dart';
+
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fashora_app/features/cart/domain/entity/cart_entity.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+
+import 'package:fashora_app/features/cart/domain/entity/cart_item_entity.dart';
+import 'package:fashora_app/features/product/presentation/view/favorite_screen.dart';
 import 'package:fashora_app/features/cart/presentation/view_model/cart_event.dart';
 import 'package:fashora_app/features/cart/presentation/view_model/cart_state.dart';
 import 'package:fashora_app/features/cart/presentation/view_model/cart_view_model.dart';
 import 'package:fashora_app/features/product/presentation/view/home_screen.dart';
 import 'package:fashora_app/features/order/domain/entity/order_item_entity.dart';
 import 'package:fashora_app/features/order/presentation/view/order_screen.dart';
-import 'package:fashora_app/features/profile/presentation/view/profile_screen.dart'; // ✅ Added
+import 'package:fashora_app/features/profile/presentation/view/profile_screen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -364,59 +386,70 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  int _selectedIndex = 2; // Cart tab index
+  int _selectedIndex = 2;
+  AccelerometerEvent? _lastEvent;
+  DateTime _lastShakeTime = DateTime.now().subtract(const Duration(seconds: 2));
+  final double _shakeThreshold = 15.0;
+  List<CartItemEntity> _cartItems = [];
 
   @override
   void initState() {
     super.initState();
     context.read<CartBloc>().add(LoadCartEvent());
+    _listenToShake();
+  }
+
+  void _listenToShake() {
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      if (_lastEvent == null) {
+        _lastEvent = event;
+        return;
+      }
+
+      final deltaX = (event.x - _lastEvent!.x).abs();
+      final deltaY = (event.y - _lastEvent!.y).abs();
+      final deltaZ = (event.z - _lastEvent!.z).abs();
+      final shake = sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
+
+      if (shake > _shakeThreshold &&
+          DateTime.now().difference(_lastShakeTime) > const Duration(seconds: 2)) {
+        _lastShakeTime = DateTime.now();
+        if (_cartItems.isNotEmpty) {
+          final lastItem = _cartItems.last;
+          context.read<CartBloc>().add(RemoveFromCartEvent(lastItem.id));
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${lastItem.name} removed via shake')),
+          );
+        }
+      }
+
+      _lastEvent = event;
+    });
   }
 
   void _onItemTapped(int index) {
     if (index == _selectedIndex) return;
 
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
 
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const FashoraHomeScreen(userId: '')),
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const FashoraHomeScreen(userId: '')));
         break;
       case 1:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const WishlistScreen(userId: '')),
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const WishlistScreen(userId: '')));
         break;
       case 2:
         break;
       case 3:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const ProfileScreen(userId: '',)), // ✅ ProfileScreen Navigation
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ProfileScreen(userId: '')));
         break;
     }
   }
 
   void _proceedToCheckout(List<CartItemEntity> items) {
-    final orderItems = items
-        .map((cartItem) => OrderItemEntity(
-              productId: cartItem.id,
-              quantity: cartItem.quantity,
-            ))
-        .toList();
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => OrderScreen(items: orderItems),
-      ),
-    );
+    final orderItems = items.map((e) => OrderItemEntity(productId: e.id, quantity: e.quantity)).toList();
+    Navigator.push(context, MaterialPageRoute(builder: (_) => OrderScreen(items: orderItems)));
   }
 
   @override
@@ -429,66 +462,32 @@ class _CartScreenState extends State<CartScreen> {
       body: Stack(
         children: [
           Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
+            top: 0, left: 0, right: 0,
             child: ClipPath(
               clipper: WaveClipper(),
               child: Container(
                 height: 140,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [brownDark, brownLight],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: brownDark.withOpacity(0.5),
-                      blurRadius: 8,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
+                  gradient: LinearGradient(colors: [brownDark, brownLight]),
+                  boxShadow: [BoxShadow(color: brownDark.withOpacity(0.5), blurRadius: 8, offset: const Offset(0, 3))],
                 ),
               ),
             ),
           ),
           const Padding(
             padding: EdgeInsets.only(top: 135, left: 120),
-            child: Text(
-              'My Cart',
-              style: TextStyle(
-                fontSize: 34,
-                fontWeight: FontWeight.bold,
-                color: Colors.brown,
-                shadows: [
-                  Shadow(blurRadius: 6, color: Colors.black26, offset: Offset(2, 2)),
-                ],
-              ),
-            ),
+            child: Text('My Cart', style: TextStyle(fontSize: 34, fontWeight: FontWeight.bold, color: Colors.brown)),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 180, left: 12, right: 12, bottom: 12),
             child: BlocBuilder<CartBloc, CartState>(
               builder: (context, state) {
-                if (state is CartLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (state is CartLoaded) {
-                  final cart = state.cart;
+                if (state is CartLoading) return const Center(child: CircularProgressIndicator());
+                if (state is CartLoaded) {
+                  _cartItems = state.cart.items;
+                  if (_cartItems.isEmpty) return const Center(child: Text('Your cart is empty', style: TextStyle(fontSize: 18, color: Colors.brown)));
 
-                  if (cart.items.isEmpty) {
-                    return const Center(
-                      child: Text(
-                        'Your cart is empty',
-                        style: TextStyle(fontSize: 18, color: Colors.brown),
-                      ),
-                    );
-                  }
-
-                  double subtotal = cart.items.fold(
-                    0,
-                    (sum, item) => sum + item.price * item.quantity,
-                  );
+                  double subtotal = _cartItems.fold(0, (sum, item) => sum + item.price * item.quantity);
                   double shipping = 150;
                   double total = subtotal + shipping;
 
@@ -496,48 +495,29 @@ class _CartScreenState extends State<CartScreen> {
                     children: [
                       Expanded(
                         child: ListView.separated(
-                          itemCount: cart.items.length,
+                          itemCount: _cartItems.length,
                           separatorBuilder: (_, __) => const SizedBox(height: 14),
-                          itemBuilder: (context, index) {
-                            final item = cart.items[index];
+                          itemBuilder: (_, index) {
+                            final item = _cartItems[index];
                             final imageUrl = (item.image != null && item.image!.isNotEmpty)
                                 ? 'http://10.0.2.2:5006/uploads/${item.image}'
                                 : '';
 
                             return Card(
                               elevation: 4,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                               shadowColor: Colors.brown.shade100,
                               child: ListTile(
-                                contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                                 leading: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
                                   child: imageUrl.isNotEmpty
-                                      ? Image.network(
-                                          imageUrl,
-                                          width: 70,
-                                          height: 70,
-                                          fit: BoxFit.cover,
-                                          errorBuilder: (_, __, ___) =>
-                                              const Icon(Icons.broken_image, size: 70),
-                                        )
+                                      ? Image.network(imageUrl, width: 70, height: 70, fit: BoxFit.cover,
+                                          errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 70))
                                       : const Icon(Icons.image_not_supported, size: 70),
                                 ),
-                                title: Text(
-                                  item.name,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w700, fontSize: 18),
-                                ),
-                                subtitle: Text(
-                                  "Rs. ${item.price.toStringAsFixed(2)}",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: brownDark,
-                                    fontSize: 15,
-                                  ),
-                                ),
+                                title: Text(item.name, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18)),
+                                subtitle: Text("Rs. ${item.price.toStringAsFixed(2)}", style: TextStyle(color: brownDark, fontWeight: FontWeight.w600, fontSize: 15)),
                                 trailing: SizedBox(
                                   width: 140,
                                   child: Row(
@@ -548,25 +528,18 @@ class _CartScreenState extends State<CartScreen> {
                                         color: brownDark,
                                         onPressed: () {
                                           if (item.quantity > 1) {
-                                            context.read<CartBloc>().add(
-                                                UpdateQuantityEvent(item.id, item.quantity - 1));
+                                            context.read<CartBloc>().add(UpdateQuantityEvent(item.id, item.quantity - 1));
                                           } else {
-                                            context
-                                                .read<CartBloc>()
-                                                .add(RemoveFromCartEvent(item.id));
+                                            context.read<CartBloc>().add(RemoveFromCartEvent(item.id));
                                           }
                                         },
                                       ),
-                                      Text(
-                                        item.quantity.toString(),
-                                        style: const TextStyle(fontSize: 17),
-                                      ),
+                                      Text(item.quantity.toString(), style: const TextStyle(fontSize: 17)),
                                       IconButton(
                                         icon: const Icon(Icons.add_circle_outline),
                                         color: brownDark,
                                         onPressed: () {
-                                          context.read<CartBloc>().add(
-                                              UpdateQuantityEvent(item.id, item.quantity + 1));
+                                          context.read<CartBloc>().add(UpdateQuantityEvent(item.id, item.quantity + 1));
                                         },
                                       ),
                                     ],
@@ -583,13 +556,7 @@ class _CartScreenState extends State<CartScreen> {
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              blurRadius: 16,
-                              color: Colors.black.withOpacity(0.07),
-                              offset: const Offset(0, -4),
-                            ),
-                          ],
+                          boxShadow: [BoxShadow(blurRadius: 16, color: Colors.black.withOpacity(0.07), offset: const Offset(0, -4))],
                         ),
                         child: Column(
                           children: [
@@ -599,19 +566,14 @@ class _CartScreenState extends State<CartScreen> {
                             _rowLabel('Total', total, brownDark, bold: true, fontSize: 20),
                             const SizedBox(height: 16),
                             ElevatedButton(
-                              onPressed: () => _proceedToCheckout(cart.items),
+                              onPressed: () => _proceedToCheckout(_cartItems),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.brown,
                                 padding: const EdgeInsets.symmetric(vertical: 16),
                                 minimumSize: const Size(double.infinity, 50),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                               ),
-                              child: const Text(
-                                'Proceed to Checkout',
-                                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
+                              child: const Text('Proceed to Checkout', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                             ),
                           ],
                         ),
@@ -619,16 +581,11 @@ class _CartScreenState extends State<CartScreen> {
                       const SizedBox(height: 16),
                     ],
                   );
-                } else if (state is CartError) {
-                  return Center(
-                    child: Text(
-                      'Error: ${state.message}',
-                      style: const TextStyle(color: Colors.redAccent, fontSize: 16),
-                    ),
-                  );
-                } else {
-                  return const SizedBox.shrink();
                 }
+                if (state is CartError) {
+                  return Center(child: Text('Error: ${state.message}', style: const TextStyle(color: Colors.redAccent, fontSize: 16)));
+                }
+                return const SizedBox.shrink();
               },
             ),
           ),
@@ -637,9 +594,7 @@ class _CartScreenState extends State<CartScreen> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: brownDark,
-          boxShadow: const [
-            BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, -1))
-          ],
+          boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, -1))],
           borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
         ),
         child: BottomNavigationBar(
@@ -663,25 +618,14 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  Widget _rowLabel(String label, double value, Color textColor,
-      {bool bold = false, double fontSize = 16}) {
+  Widget _rowLabel(String label, double value, Color textColor, {bool bold = false, double fontSize = 16}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label,
-              style: TextStyle(
-                fontWeight: bold ? FontWeight.bold : FontWeight.w500,
-                fontSize: fontSize,
-                color: textColor,
-              )),
-          Text('Rs. ${value.toStringAsFixed(2)}',
-              style: TextStyle(
-                fontWeight: bold ? FontWeight.bold : FontWeight.w500,
-                fontSize: fontSize,
-                color: textColor,
-              )),
+          Text(label, style: TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.w500, fontSize: fontSize, color: textColor)),
+          Text('Rs. ${value.toStringAsFixed(2)}', style: TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.w500, fontSize: fontSize, color: textColor)),
         ],
       ),
     );
