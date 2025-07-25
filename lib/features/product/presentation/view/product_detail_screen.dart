@@ -80,15 +80,28 @@ class ProductDetailScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                onPressed: () {
-                  if (product.id != null) {
-                    BlocProvider.of<CartBloc>(context).add(AddToCartEvent(product.id!));
+         onPressed: () {
+  if (product.id != null) {
+    BlocProvider.of<CartBloc>(context).add(AddToCartEvent(product.id!));
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("✅ Added to cart")),
-                    );
-                  }
-                },
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text(
+          "✅ Added to cart",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.green,
+        duration: const Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        elevation: 6,
+      ),
+    );
+  }
+},
+
                 icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
                 label: const Text("Add to Cart", style: TextStyle(fontSize: 18, color: Colors.white)),
               ),

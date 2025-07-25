@@ -1,135 +1,100 @@
-// import 'package:fashora_app/features/product/presentation/view_model/favorite_viewmodel.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_test/flutter_test.dart';
-// import 'package:mocktail/mocktail.dart';
+// favorite_bloc_test.dart
 
-// import 'package:fashora_app/features/product/domain/entity/product_entity.dart';
-// import 'package:fashora_app/features/product/domain/use_case/get_favorite.dart';
-// import 'package:fashora_app/features/product/presentation/view_model/favorite_event.dart';
-// import 'package:fashora_app/features/product/presentation/view_model/favorite_state.dart';
+import 'package:bloc_test/bloc_test.dart';
+import 'package:dartz/dartz.dart';
+import 'package:fashora_app/core/error/failure.dart';
+import 'package:fashora_app/features/product/domain/entity/product_entity.dart';
+import 'package:fashora_app/features/product/domain/repository/favorite_repository.dart';
 
+import 'package:fashora_app/features/product/presentation/view_model/favorite_event.dart';
+import 'package:fashora_app/features/product/presentation/view_model/favorite_state.dart';
+import 'package:fashora_app/features/product/presentation/view_model/favorite_viewmodel.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 
-// // MOCKS
+// ✅ Create a mock for IFavoriteRepository
+class MockFavoriteRepository extends Mock implements IFavoriteRepository {}
 
-// class MockGetFavoritesUseCase extends Mock implements GetFavoritesUseCase {}
+// ✅ Create a concrete implementation of Failure for testing
+class FakeFailure extends Failure {
+  FakeFailure(String message) : super(message: message);
+}
 
-// class MockToggleFavoriteUseCase extends Mock implements ToggleFavoriteUseCase {}
+void main() {
+  late MockFavoriteRepository mockRepository;
+  late FavoriteBloc favoriteBloc;
 
-// class FakeFavoriteEvent extends Fake implements FavoriteEvent {}
+  setUp(() {
+    mockRepository = MockFavoriteRepository();
+    favoriteBloc = FavoriteBloc(mockRepository);
+  });
 
-// void main() {
-//   late MockGetFavoritesUseCase mockGetFavoritesUseCase;
-//   late MockToggleFavoriteUseCase mockToggleFavoriteUseCase;
-//   late FavoriteViewModel favoriteViewModel;
+  final mockProduct = ProductEntity(
+    id: '1',
+    name: 'Test Product',
+    price: '200',
+    categoryName: 'Shirt',
+    sellerName: 'Test Seller',
+    image: 'test.jpg',
+    description: 'Test desc',
+    stock: 5,
+  );
 
-//   // Use your full ProductEntity constructor here:
-//   final product = ProductEntity(
-//     id: '1',
-//     name: 'T-Shirt',
-//     price: '1000',
-//     categoryName: 'Tops',
-//     sellerName: 'Fashora',
-//     image: 'tshirt.jpg',
-//     description: 'A comfortable cotton t-shirt',
-//     stock: 15,
-//   );
+  group('FavoriteBloc', () {
+    blocTest<FavoriteBloc, FavoriteState>(
+      'emits [FavoriteLoading, FavoriteLoaded] when LoadFavoritesEvent is successful',
+      build: () {
+        when(() => mockRepository.getFavorites())
+            .thenAnswer((_) async => Right([mockProduct]));
+        return favoriteBloc;
+      },
+      act: (bloc) => bloc.add(LoadFavoritesEvent()),
+      expect: () => [
+        FavoriteLoading(),
+        FavoriteLoaded([mockProduct]),
+      ],
+    );
 
-//   setUpAll(() {
-//     registerFallbackValue(FakeFavoriteEvent());
-//   });
+    blocTest<FavoriteBloc, FavoriteState>(
+      'emits [FavoriteLoading, FavoriteError] when LoadFavoritesEvent fails',
+      build: () {
+        when(() => mockRepository.getFavorites())
+            .thenAnswer((_) async => Left(FakeFailure('Failed')));
+        return favoriteBloc;
+      },
+      act: (bloc) => bloc.add(LoadFavoritesEvent()),
+      expect: () => [
+        FavoriteLoading(),
+        FavoriteError('Failed'),
+      ],
+    );
 
-//   setUp(() {
-//     mockGetFavoritesUseCase = MockGetFavoritesUseCase();
-//     mockToggleFavoriteUseCase = MockToggleFavoriteUseCase();
-//     favoriteViewModel = FavoriteViewModel(
-//       getFavoritesUseCase: mockGetFavoritesUseCase,
-//       toggleFavoriteUseCase: mockToggleFavoriteUseCase,
-//     );
-//   });
+    // blocTest<FavoriteBloc, FavoriteState>(
+    //   'emits [FavoriteLoaded] with updated list after ToggleFavoriteEvent success',
+    //   build: () {
+    //     when(() => mockRepository.toggleFavorite('1'))
+    //         .thenAnswer((_) async => const Right(true));
+    //     when(() => mockRepository.getFavorites())
+    //         .thenAnswer((_) async => Right([mockProduct]));
+    //     return favoriteBloc;
+    //   },
+    //   act: (bloc) => bloc.add(ToggleFavoriteEvent('1')),
+    //   expect: () => [
+    //     FavoriteLoaded([mockProduct]),
+    //   ],
+    // );
 
-//   // testWidgets('FavoriteViewModel loads favorites and emits states', (tester) async {
-//   //   when(() => mockGetFavoritesUseCase()).thenAnswer((_) async => [product]);
-
-//   //   await tester.pumpWidget(
-//   //     MaterialApp(
-//   //       home: Scaffold(
-//   //         body: Builder(
-//   //           builder: (context) {
-//   //             WidgetsBinding.instance.addPostFrameCallback((_) {
-//   //               favoriteViewModel.add(LoadFavoritesEvent());
-//   //             });
-//   //             return Container(key: const Key('fav_container'));
-//   //           },
-//   //         ),
-//   //       ),
-//   //     ),
-//   //   );
-
-//   //   await tester.pumpAndSettle();
-
-//   //   expect(favoriteViewModel.state, isA<FavoriteLoaded>());
-//   //   final loadedState = favoriteViewModel.state as FavoriteLoaded;
-//   //   expect(loadedState.favorites.length, 1);
-//   //   expect(loadedState.favorites.first.name, 'T-Shirt');
-
-//   //   verify(() => mockGetFavoritesUseCase()).called(1);
-//   // });
-
-// //   testWidgets('FavoriteViewModel toggles favorite and reloads favorites', (tester) async {
-// //  when(() => mockToggleFavoriteUseCase('1')).thenAnswer((_) async => true);
-
-// //     when(() => mockGetFavoritesUseCase()).thenAnswer((_) async => [product]);
-
-// //     await tester.pumpWidget(
-// //       MaterialApp(
-// //         home: Scaffold(
-// //           body: Builder(
-// //             builder: (context) {
-// //               WidgetsBinding.instance.addPostFrameCallback((_) {
-// //                 favoriteViewModel.add(ToggleFavoriteEvent('1'));
-// //               });
-// //               return Container(key: const Key('fav_toggle_container'));
-// //             },
-// //           ),
-// //         ),
-// //       ),
-// //     );
-
-// //     await tester.pumpAndSettle();
-
-// //     expect(favoriteViewModel.state, isA<FavoriteLoaded>());
-// //     final loadedState = favoriteViewModel.state as FavoriteLoaded;
-// //     expect(loadedState.favorites.length, 1);
-// //     expect(loadedState.favorites.first.name, 'T-Shirt');
-
-// //     verify(() => mockToggleFavoriteUseCase('1')).called(1);
-// //     verify(() => mockGetFavoritesUseCase()).called(1);
-// //   });
-
-//   testWidgets('FavoriteViewModel emits error when getFavorites fails', (tester) async {
-//     when(() => mockGetFavoritesUseCase()).thenThrow(Exception('Load failed'));
-
-//     await tester.pumpWidget(
-//       MaterialApp(
-//         home: Scaffold(
-//           body: Builder(
-//             builder: (context) {
-//               WidgetsBinding.instance.addPostFrameCallback((_) {
-//                 favoriteViewModel.add(LoadFavoritesEvent());
-//               });
-//               return Container(key: const Key('fav_error_container'));
-//             },
-//           ),
-//         ),
-//       ),
-//     );
-
-//     await tester.pumpAndSettle();
-
-//     expect(favoriteViewModel.state, isA<FavoriteError>());
-//     final errorState = favoriteViewModel.state as FavoriteError;
-//     expect(errorState.message, contains('Load failed'));
-
-//     verify(() => mockGetFavoritesUseCase()).called(1);
-//   });
-// }
+    blocTest<FavoriteBloc, FavoriteState>(
+      'emits [FavoriteError] when ToggleFavoriteEvent fails',
+      build: () {
+        when(() => mockRepository.toggleFavorite('1'))
+            .thenAnswer((_) async => Left(FakeFailure('Toggle failed')));
+        return favoriteBloc;
+      },
+      act: (bloc) => bloc.add(ToggleFavoriteEvent( '1')),
+      expect: () => [
+        FavoriteError('Toggle failed'),
+      ],
+    );
+  });
+}

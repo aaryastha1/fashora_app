@@ -38,7 +38,7 @@
 //     );
 //   }
 
-//   testWidgets('fills form and triggers PlaceOrderEvent and navigates on success', (tester) async {
+//   testWidgets('fills form, dispatches PlaceOrderEvent, navigates on success', (tester) async {
 //     final testItems = [
 //       OrderItemEntity(productId: '1', quantity: 1),
 //     ];

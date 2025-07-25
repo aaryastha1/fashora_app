@@ -1,12 +1,13 @@
 
 
-
+// import 'package:fashora_app/features/auth/presentation/view/login.dart';
 // import 'package:fashora_app/features/cart/presentation/view/cart_screen.dart';
 // import 'package:fashora_app/features/product/presentation/view/home_screen.dart';
 // import 'package:fashora_app/features/profile/domain/entity/profile_entity.dart';
 // import 'package:fashora_app/features/profile/presentation/view_model/profile_event.dart';
 // import 'package:fashora_app/features/profile/presentation/view_model/profile_state.dart';
 // import 'package:fashora_app/features/profile/presentation/view_model/profile_viewmodel.dart';
+//  // Assuming this is the sign-in page
 // import 'package:flutter/material.dart';
 // import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -108,19 +109,37 @@
 //             ),
 //           ),
 
-//           // Title "My Profile" with styling and shadow
-//           const Padding(
-//             padding: EdgeInsets.only(top: 135, left: 120),
-//             child: Text(
-//               'My Profile',
-//               style: TextStyle(
-//                 fontSize: 34,
-//                 fontWeight: FontWeight.bold,
-//                 color: Colors.brown,
-//                 shadows: [
-//                   Shadow(blurRadius: 6, color: Colors.black26, offset: Offset(2, 2)),
-//                 ],
-//               ),
+//           // Title "My Profile" with logo
+//           Padding(
+//             padding: const EdgeInsets.only(top: 120, left: 16),
+//             child: Row(
+//               children: [
+//                 Container(
+//                   width: 50,
+//                   height: 50,
+//                   decoration: BoxDecoration(
+//                     color: brownDark,
+//                     shape: BoxShape.circle,
+//                   ),
+//                   child: Icon(
+//                     Icons.person_outline,
+//                     color: Colors.white,
+//                     size: 30,
+//                   ),
+//                 ),
+//                 const SizedBox(width: 10),
+//                 const Text(
+//                   'My Profile',
+//                   style: TextStyle(
+//                     fontSize: 34,
+//                     fontWeight: FontWeight.bold,
+//                     color: Colors.brown,
+//                     shadows: [
+//                       Shadow(blurRadius: 6, color: Colors.black26, offset: Offset(2, 2)),
+//                     ],
+//                   ),
+//                 ),
+//               ],
 //             ),
 //           ),
 
@@ -237,18 +256,51 @@
 //                                       ),
 //                                     );
 //                               },
-//                               style: ElevatedButton.styleFrom(
-//                                 backgroundColor: brownDark,
-//                                 foregroundColor: Colors.white,
-//                                 shape: RoundedRectangleBorder(
-//                                   borderRadius: BorderRadius.circular(8),
-//                                 ),
-//                                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+//                            style: ElevatedButton.styleFrom(
+//                               backgroundColor: Colors.brown,
+//                               foregroundColor: Colors.white,
+//                               elevation: 4,
+//                               shadowColor: Colors.brown.shade200,
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.circular(16), // More rounded corners
 //                               ),
+//                               padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16), // More spacious
+//                               textStyle: const TextStyle(
+//                                 fontSize: 16,
+//                                 fontWeight: FontWeight.w600,
+//                                 letterSpacing: 0.5,
+//                               ),
+//                             ),
+
 //                               child: const Text(
 //                                 "Update Profile",
 //                                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
 //                               ),
+//                             ),
+//                             const SizedBox(height: 12),
+//                             ElevatedButton(
+//                               onPressed: () {
+//                                 Navigator.pushReplacement(
+//                                   context,
+//                                   MaterialPageRoute(builder: (_) => const LoginPage()),
+//                                 );
+//                               },
+//                             style: ElevatedButton.styleFrom(
+//                               backgroundColor: Colors.brown,
+//                               foregroundColor: Colors.white,
+//                               elevation: 4,
+//                               shadowColor: Colors.brown.shade200,
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.circular(16), // More modern curve
+//                               ),
+//                               padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16), // Spacious feel
+//                               textStyle: const TextStyle(
+//                                 fontSize: 16,
+//                                 fontWeight: FontWeight.w600,
+//                                 letterSpacing: 0.5,
+//                               ),
+//                             ),
+//                             child: const Text("Logout"),
 //                             ),
 //                           ],
 //                         ),
@@ -317,6 +369,14 @@
 // }
 
 
+
+import 'dart:async';
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+
 import 'package:fashora_app/features/auth/presentation/view/login.dart';
 import 'package:fashora_app/features/cart/presentation/view/cart_screen.dart';
 import 'package:fashora_app/features/product/presentation/view/home_screen.dart';
@@ -324,9 +384,6 @@ import 'package:fashora_app/features/profile/domain/entity/profile_entity.dart';
 import 'package:fashora_app/features/profile/presentation/view_model/profile_event.dart';
 import 'package:fashora_app/features/profile/presentation/view_model/profile_state.dart';
 import 'package:fashora_app/features/profile/presentation/view_model/profile_viewmodel.dart';
- // Assuming this is the sign-in page
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String userId;
@@ -342,17 +399,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController _emailController;
   late TextEditingController _phoneNumberController;
   late TextEditingController _passwordController;
-  int _selectedIndex = 3; // Profile tab index
+  int _selectedIndex = 3;
+  StreamSubscription? _accelerometerSubscription;
 
   @override
   void initState() {
     super.initState();
     context.read<ProfileBloc>().add(LoadProfile());
+
     _nameController = TextEditingController();
     _emailController = TextEditingController();
     _phoneNumberController = TextEditingController();
     _passwordController = TextEditingController();
+
+    // Start listening for shake gesture
+    _startListeningForShake();
   }
+
+  void _startListeningForShake() {
+    const double shakeThreshold = 15.0;
+    _accelerometerSubscription = accelerometerEvents.listen((event) {
+      final double acceleration = sqrt(
+        event.x * event.x + event.y * event.y + event.z * event.z,
+      );
+
+      if (acceleration > shakeThreshold) {
+        _handleShakeLogout();
+      }
+    });
+  }
+
+ void _handleShakeLogout() {
+  // ScaffoldMessenger.of(context).showSnackBar(
+  //   const SnackBar(
+  //     content: Text('Logout'),
+  //     duration: Duration(seconds: 1),
+  //   ),
+  // );
+
+  Future.delayed(const Duration(milliseconds: 100), () {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const LoginPage()),
+    );
+  });
+}
+
 
   @override
   void dispose() {
@@ -360,14 +452,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _emailController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
+    _accelerometerSubscription?.cancel(); // cancel shake listener
     super.dispose();
   }
 
   void _onItemTapped(int index) {
     if (index == _selectedIndex) return;
-    setState(() {
-      _selectedIndex = index;
-    });
+    setState(() => _selectedIndex = index);
     switch (index) {
       case 0:
         Navigator.pushReplacement(
@@ -376,16 +467,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
         break;
       case 1:
-        // TODO: Navigate to Wishlist Screen
+        // TODO: Navigate to Wishlist
         break;
       case 2:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const CartScreen()),
-        );
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const CartScreen()));
         break;
       case 3:
-        // Already here
         break;
     }
   }
@@ -399,7 +486,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       backgroundColor: Colors.grey.shade100,
       body: Stack(
         children: [
-          // Curved background with gradient
           Positioned(
             top: 0,
             left: 0,
@@ -426,7 +512,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
 
-          // Title "My Profile" with logo
           Padding(
             padding: const EdgeInsets.only(top: 120, left: 16),
             child: Row(
@@ -438,11 +523,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     color: brownDark,
                     shape: BoxShape.circle,
                   ),
-                  child: Icon(
-                    Icons.person_outline,
-                    color: Colors.white,
-                    size: 30,
-                  ),
+                  child: const Icon(Icons.person_outline, color: Colors.white, size: 30),
                 ),
                 const SizedBox(width: 10),
                 const Text(
@@ -451,37 +532,58 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     fontSize: 34,
                     fontWeight: FontWeight.bold,
                     color: Colors.brown,
-                    shadows: [
-                      Shadow(blurRadius: 6, color: Colors.black26, offset: Offset(2, 2)),
-                    ],
+                    shadows: [Shadow(blurRadius: 6, color: Colors.black26, offset: Offset(2, 2))],
                   ),
                 ),
               ],
             ),
           ),
 
-          // Main content with padding
           Padding(
             padding: const EdgeInsets.only(top: 180, left: 12, right: 12, bottom: 12),
             child: BlocConsumer<ProfileBloc, ProfileState>(
-              listener: (context, state) {
-                if (state is ProfileUpdated) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Profile updated successfully")),
-                  );
-                } else if (state is ProfileError) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text(state.message)),
-                  );
-                }
-              },
+         listener: (context, state) {
+  if (state is ProfileUpdated) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          "✅ Profile updated successfully",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.green,
+        duration: Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        elevation: 6,
+      ),
+    );
+  } else if (state is ProfileError) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          state.message,
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.red,
+        duration: const Duration(seconds: 3),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        elevation: 6,
+      ),
+    );
+  }
+},
+
               builder: (context, state) {
                 if (state is ProfileLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is ProfileLoaded || state is ProfileUpdated) {
                   final profile = state is ProfileLoaded ? state.profile : (state as ProfileUpdated).updatedProfile;
 
-                  // Initialize controllers with profile data
                   _nameController.text = profile.name;
                   _emailController.text = profile.email;
                   _phoneNumberController.text = profile.phoneNumber;
@@ -495,63 +597,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            TextFormField(
-                              controller: _nameController,
-                              decoration: InputDecoration(
-                                labelText: "Name",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: brownDark),
-                                ),
-                              ),
-                            ),
+                            _buildTextField("Name", _nameController, brownDark),
                             const SizedBox(height: 12),
-                            TextFormField(
-                              controller: _emailController,
-                              decoration: InputDecoration(
-                                labelText: "Email",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: brownDark),
-                                ),
-                              ),
-                              readOnly: true,
-                            ),
+                            _buildTextField("Email", _emailController, brownDark, readOnly: true),
                             const SizedBox(height: 12),
-                            TextFormField(
-                              controller: _phoneNumberController,
-                              decoration: InputDecoration(
-                                labelText: "Phone Number",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: brownDark),
-                                ),
-                              ),
-                            ),
+                            _buildTextField("Phone Number", _phoneNumberController, brownDark),
                             const SizedBox(height: 12),
-                            TextFormField(
-                              controller: _passwordController,
-                              decoration: InputDecoration(
-                                labelText: "New Password",
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(color: brownDark),
-                                ),
-                              ),
-                              obscureText: true,
-                            ),
+                            _buildTextField("New Password", _passwordController, brownDark, obscure: true),
                             const SizedBox(height: 20),
                             ElevatedButton(
                               onPressed: () {
@@ -563,7 +615,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   profileImageUrl: profile.profileImageUrl,
                                   address: profile.address,
                                 );
-
                                 context.read<ProfileBloc>().add(
                                       UpdateProfile(
                                         updatedProfile,
@@ -573,52 +624,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     );
                               },
-                           style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.brown,
-                              foregroundColor: Colors.white,
-                              elevation: 4,
-                              shadowColor: Colors.brown.shade200,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16), // More rounded corners
-                              ),
-                              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16), // More spacious
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-
-                              child: const Text(
-                                "Update Profile",
-                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                              ),
+                              style: _buttonStyle(),
+                              child: const Text("Update Profile"),
                             ),
                             const SizedBox(height: 12),
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (_) => const LoginPage()),
-                                );
-                              },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.brown,
-                              foregroundColor: Colors.white,
-                              elevation: 4,
-                              shadowColor: Colors.brown.shade200,
+                                            ElevatedButton(
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                "✅ Logged out Successfully",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: Colors.green,
+                              duration: Duration(seconds: 3),
+                              behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16), // More modern curve
+                                borderRadius: BorderRadius.all(Radius.circular(12)),
                               ),
-                              padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16), // Spacious feel
-                              textStyle: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                letterSpacing: 0.5,
-                              ),
+                              elevation: 6,
                             ),
-                            child: const Text("Logout"),
-                            ),
+                          );
+
+                          Future.delayed(const Duration(milliseconds: 500), () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (_) => const LoginPage()),
+                            );
+                          });
+                        },
+                        style: _buttonStyle(),
+                        child: const Text("Logout"),
+                      ),
+
                           ],
                         ),
                       ),
@@ -642,9 +680,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.brown.shade700,
-          boxShadow: const [
-            BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, -1)),
-          ],
+          boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, -1))],
           borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
         ),
         child: BottomNavigationBar(
@@ -667,9 +703,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  Widget _buildTextField(String label, TextEditingController controller, Color color,
+      {bool readOnly = false, bool obscure = false}) {
+    return TextFormField(
+      controller: controller,
+      readOnly: readOnly,
+      obscureText: obscure,
+      decoration: InputDecoration(
+        labelText: label,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(color: color),
+        ),
+      ),
+    );
+  }
+
+  ButtonStyle _buttonStyle() {
+    return ElevatedButton.styleFrom(
+      backgroundColor: Colors.brown,
+      foregroundColor: Colors.white,
+      elevation: 4,
+      shadowColor: Colors.brown.shade200,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, letterSpacing: 0.5),
+    );
+  }
 }
 
-// The WaveClipper for the curved background
 class WaveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {

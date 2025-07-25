@@ -169,15 +169,15 @@ class DashboardContent extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 24),
-              const Text(
-                'Shop by Category',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              const SizedBox(height: 14),
+              // const Text(
+              //   'Shop by Category',
+              //   style: TextStyle(
+              //     fontSize: 20,
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.black87,
+              //   ),
+              // ),
+              // const SizedBox(height: 14),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 // children: [
