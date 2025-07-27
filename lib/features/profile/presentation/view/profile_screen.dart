@@ -430,12 +430,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
  void _handleShakeLogout() {
-  ScaffoldMessenger.of(context).showSnackBar(
-    const SnackBar(
-      content: Text('Logout'),
-      duration: Duration(seconds: 1),
-    ),
-  );
+  // ScaffoldMessenger.of(context).showSnackBar(
+  //   const SnackBar(
+  //     content: Text('Logout'),
+  //     duration: Duration(seconds: 1),
+  //   ),
+  // );
 
   Future.delayed(const Duration(milliseconds: 100), () {
     Navigator.pushReplacement(
