@@ -8,7 +8,8 @@ import 'package:fashora_app/features/product/domain/entity/product_entity.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final ProductEntity product;
-  final String backendBaseUrl = 'http://10.0.2.2:5006';
+  // final String backendBaseUrl = 'http://10.0.2.2:5006';
+   final String backendBaseUrl = 'http://192.168.1.72:5006';
 
   ProductDetailScreen({super.key, required this.product});
 

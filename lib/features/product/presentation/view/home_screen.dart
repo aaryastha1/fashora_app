@@ -33,7 +33,9 @@ class FashoraHomeScreen extends StatefulWidget {
 class _FashoraHomeScreenState extends State<FashoraHomeScreen> {
   final List<String> categories = ['TOPS', 'SHIRTS', 'DRESSES', 'PANTS', 'KNITWEAR', 'OFFERS'];
   late int selectedCategoryIndex;
-  final String backendBaseUrl = 'http://10.0.2.2:5006';
+  // final String backendBaseUrl = 'http://10.0.2.2:5006';
+  final String backendBaseUrl = 'http://192.168.1.72:5006';
+
   final ScrollController _categoryScrollController = ScrollController();
   int _currentIndex = 0;
   Set<String> favoriteProductIds = {};

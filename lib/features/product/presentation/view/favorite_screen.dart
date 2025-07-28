@@ -402,9 +402,12 @@ class _WishlistScreenState extends State<WishlistScreen> {
                     separatorBuilder: (_, __) => const Divider(height: 12),
                     itemBuilder: (context, index) {
                       final product = favorites[index];
+                     final String backendBaseUrl = 'http://192.168.1.72:5006';
+
                       final imageUrl = (product.image.isNotEmpty && product.image.startsWith('http'))
                           ? product.image
-                          : (product.image.isNotEmpty ? 'http://10.0.2.2:5006/uploads/${product.image}' : '');
+                          : (product.image.isNotEmpty ? '$backendBaseUrl/uploads/${product.image}' : '');
+
 
                       return Card(
                         elevation: 3,

@@ -157,10 +157,16 @@ class _CartScreenState extends State<CartScreen> {
                           itemCount: cart.items.length,
                           separatorBuilder: (_, __) => const SizedBox(height: 14),
                           itemBuilder: (context, index) {
+                            // final item = cart.items[index];
+                            // final imageUrl = (item.image != null && item.image!.isNotEmpty)
+                            //     ? 'http://10.0.2.2:5006/uploads/${item.image}'
+                            //     : '';
+
                             final item = cart.items[index];
                             final imageUrl = (item.image != null && item.image!.isNotEmpty)
-                                ? 'http://10.0.2.2:5006/uploads/${item.image}'
+                                ? 'http://192.168.1.72:5006/uploads/${item.image}'
                                 : '';
+
 
                             return Card(
                               elevation: 4,
