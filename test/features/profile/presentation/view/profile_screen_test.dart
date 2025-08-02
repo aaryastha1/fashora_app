@@ -95,18 +95,7 @@ void main() {
         )).called(1);
   });
 
-// testWidgets('navigates to LoginPage on logout tap', (tester) async {
-//   when(() => mockProfileBloc.state).thenReturn(ProfileLoaded(testProfile));
 
-//   await tester.pumpWidget(buildTestableWidget(const ProfileScreen(userId: '123')));
-//   await tester.pumpAndSettle();
-
-//   // Use ElevatedButton instead of TextButton
-//   await tester.tap(find.widgetWithText(ElevatedButton, 'Logout'));
-//   await tester.pumpAndSettle();
-
-//   expect(find.byType(LoginPage), findsOneWidget);
-// });
 
 
 

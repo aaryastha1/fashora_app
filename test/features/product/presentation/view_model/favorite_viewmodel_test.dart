@@ -69,20 +69,6 @@ void main() {
       ],
     );
 
-    // blocTest<FavoriteBloc, FavoriteState>(
-    //   'emits [FavoriteLoaded] with updated list after ToggleFavoriteEvent success',
-    //   build: () {
-    //     when(() => mockRepository.toggleFavorite('1'))
-    //         .thenAnswer((_) async => const Right(true));
-    //     when(() => mockRepository.getFavorites())
-    //         .thenAnswer((_) async => Right([mockProduct]));
-    //     return favoriteBloc;
-    //   },
-    //   act: (bloc) => bloc.add(ToggleFavoriteEvent('1')),
-    //   expect: () => [
-    //     FavoriteLoaded([mockProduct]),
-    //   ],
-    // );
 
     blocTest<FavoriteBloc, FavoriteState>(
       'emits [FavoriteError] when ToggleFavoriteEvent fails',

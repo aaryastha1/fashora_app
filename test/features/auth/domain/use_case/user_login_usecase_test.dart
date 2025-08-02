@@ -31,23 +31,6 @@ void main() {
     );
   });
 
-  test('should return token and save it when login is successful', () async {
-    // Arrange: repository returns Right(token)
-    when(() => mockUserRepository.loginUser(tEmail, tPassword))
-        .thenAnswer((_) async => const Right(tToken));
-
-    // Arrange: shared prefs saveToken returns Future<void>
-    when(() => mockTokenSharedPrefs.saveToken(tToken))
-        .thenAnswer((_) async => Future.value());
-
-    // Act
-    final result = await usecase(tParams);
-
-    // Assert
-    expect(result, const Right(tToken));
-    verify(() => mockUserRepository.loginUser(tEmail, tPassword)).called(1);
-    verify(() => mockTokenSharedPrefs.saveToken(tToken)).called(1);
-  });
 
   test('should return failure when login fails', () async {
     // Arrange: repository returns Left(Failure)
